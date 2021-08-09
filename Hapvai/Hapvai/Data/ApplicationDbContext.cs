@@ -47,10 +47,16 @@ namespace Hapvai.Data
                 .HasMany(o => o.Products);
 
             builder
-                .Entity<Menu>()
-                .HasMany(m=> m.Products)
-                .WithOne(m=> m.Menu)
-                .OnDelete(DeleteBehavior.Restrict);
+                 .Entity<Product>()
+                 .HasOne(p => p.Menu)
+                 .WithMany(p => p.Products)
+                 .HasForeignKey(p=> p.MenuId);
+
+            builder
+                 .Entity<Product>()
+                 .HasOne(p => p.Order)
+                 .WithMany(p => p.Products)
+                 .HasForeignKey(p=> p.OrderId);
 
             base.OnModelCreating(builder);
         }
