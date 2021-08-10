@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,11 @@ namespace Hapvai.Data.Models
         public DateTime OpenTime { get; set; }
 
         public DateTime CloseTime { get; set; }
+
+        [Required]
+        [Url]
+        [Display(Name = "Image URL")]
+        public string ImageUrl { get; init; }
 
         public int Rating { get; set; }
 
