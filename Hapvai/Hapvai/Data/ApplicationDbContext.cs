@@ -18,9 +18,18 @@ namespace Hapvai.Data
         public DbSet<Menu> Menus { get; init; }
         public DbSet<Order> Orders { get; init; }
         public DbSet<Product> Products { get; init; }
+        public DbSet<Foodtype> Foodtypes { get; init; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder
+                .Entity<Product>()
+                .HasOne(f=> f.Foodtype)
+                .WithMany(p=> p.Products)
+                .HasForeignKey(p=> p.FoodtypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder
                 .Entity<Restaurant>()
                 .HasOne(c => c.Category)
