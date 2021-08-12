@@ -1,0 +1,23 @@
+﻿@model IEnumerable<RestaurantViewModel>
+
+
+    <div class="row">
+
+
+        @foreach (var restaurant in Model)
+        {
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img style="height : 15rem;" class="card-img-top rounded" src="@restaurant.ImageUrl" alt="Card image cap">
+
+                <div class="card-body pt-1">
+                    <h5 class="card-title text-center">@restaurant.Name</h5>
+                    <p class="card-text">Category: @restaurant.Category</p>
+                    <p class="card-text mt-0">Location: @restaurant.Location</p>
+                    <a href="#" class="btn btn-primary">Order</a>
+                </div>
+            </div>
+        </div>
+            
+        }
+    </div>

@@ -1,0 +1,29 @@
+﻿@model ProductFormModel
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" placeholder="Enter Product Name..." />
+        <span asp-validation-for="Name" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input type="number" asp-for="Price" class="form-control" placeholder="Enter Price..." />
+        <span asp-validation-for="Price" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="Enter ImageUrl..." />
+    </div>
+    <div class="form-group">
+        <label asp-for="FoodTypeId"></label>
+        <select asp-for="FoodTypeId" class="form-control">
+            @foreach (var type in Model.Foodtypes)
+            {
+                <option value="@type.Id">@type.Name</option>
+            }
+        </select>
+    </div>
+
+    <input type="submit" class="btn btn-primary mt-3" value="Save" />
+</form>

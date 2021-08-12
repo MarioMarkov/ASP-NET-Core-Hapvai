@@ -25,14 +25,14 @@ namespace Hapvai.Data.Models
 
         public int Rating { get; set; }
 
-        public int MenuId { get; set; }
-        public Menu Menu { get; set; }
-
-
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public IEnumerable<Order> Orders { get; init; } = new List<Order>();
 
+        public int OwnerId { get; set; }
+        public Owner Owner{ get; set; }
+
+        public IEnumerable<Order> Orders { get; init; } = new List<Order>();
+        public IEnumerable<Product> Products { get; init; } = new List<Product>();
     }
 }

@@ -21,9 +21,9 @@ namespace Hapvai.Data.Models
         public string Name { get; set; }
 
         [Required]
-        [ForeignKey("MenuId")]
-        public int MenuId { get; set; }
-        public Menu Menu { get; set; }
+        [ForeignKey("RestaurantId")]
+        public int RestaurantId { get; set; }
+        public Restaurant Restaurant { get; set; }
 
 
         [ForeignKey("FoodtypeId")]
