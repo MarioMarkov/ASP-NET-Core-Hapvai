@@ -44,7 +44,7 @@ namespace Hapvai.Controllers
                 Price = data.Price,
                 ImageUrl = data.ImageUrl,
                 FoodtypeId = data.FoodTypeId,
-
+                
             };
 
             this.context.Products.Add(product);

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hapvai.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,20 +71,6 @@ namespace Hapvai.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Foodtypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Owner",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Owner", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -194,6 +180,26 @@ namespace Hapvai.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Owners",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Owners", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Owners_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Restaurants",
                 columns: table => new
                 {
@@ -218,9 +224,9 @@ namespace Hapvai.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Restaurants_Owner_OwnerId",
+                        name: "FK_Restaurants_Owners_OwnerId",
                         column: x => x.OwnerId,
-                        principalTable: "Owner",
+                        principalTable: "Owners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -325,6 +331,13 @@ namespace Hapvai.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Owners_UserId",
+                table: "Owners",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_FoodtypeId",
                 table: "Products",
                 column: "FoodtypeId");
@@ -374,9 +387,6 @@ namespace Hapvai.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Foodtypes");
 
             migrationBuilder.DropTable(
@@ -389,7 +399,10 @@ namespace Hapvai.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Owner");
+                name: "Owners");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

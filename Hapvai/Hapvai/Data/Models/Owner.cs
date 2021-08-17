@@ -11,7 +11,7 @@ namespace Hapvai.Data.Models
 
         public string Name { get; set; }
 
-        public  int UserId { get; set; }
+        public  string UserId { get; set; }
 
 
         public IEnumerable<Restaurant> Restaurants = new List<Restaurant>();

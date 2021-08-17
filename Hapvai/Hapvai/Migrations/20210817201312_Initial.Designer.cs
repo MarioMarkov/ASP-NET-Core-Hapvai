@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hapvai.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210812194023_initial2")]
-    partial class initial2
+    [Migration("20210817201312_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,10 +82,14 @@ namespace Hapvai.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Owners");
                 });
@@ -381,6 +385,14 @@ namespace Hapvai.Migrations
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("Hapvai.Data.Models.Owner", b =>
+                {
+                    b.HasOne("Hapvai.Data.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("Hapvai.Data.Models.Owner", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Hapvai.Data.Models.Product", b =>

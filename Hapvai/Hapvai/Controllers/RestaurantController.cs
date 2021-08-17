@@ -1,6 +1,7 @@
 ﻿using Hapvai.Data;
 using Hapvai.Data.Models;
 using Hapvai.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,10 @@ namespace Hapvai.Controllers
             return View(restaurants);
         }
 
+        [Authorize]
         public IActionResult Add()
         {
+           
             if (!this.context.Categories.Any())
             {
                 var categories = new List<Category>() {
@@ -59,6 +62,7 @@ namespace Hapvai.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(RestaurantFormModel data)
         {
             var restaurant = new Restaurant()

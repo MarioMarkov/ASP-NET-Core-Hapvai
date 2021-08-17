@@ -1,4 +1,5 @@
 ﻿using Hapvai.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -65,6 +66,13 @@ namespace Hapvai.Data
                 .Entity<Owner>()
                 .HasMany(o => o.Restaurants)
                 .WithOne(r => r.Owner);
+
+            builder
+               .Entity<Owner>()
+               .HasOne<User>()
+               .WithOne()
+               .HasForeignKey<Owner>(d => d.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }
