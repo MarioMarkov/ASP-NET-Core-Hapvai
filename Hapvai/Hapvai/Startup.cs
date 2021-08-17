@@ -45,10 +45,6 @@ namespace Hapvai
              .AddRoles<IdentityRole>()
               .AddEntityFrameworkStores<ApplicationDbContext>(); ;
 
-
-
-
-
             services.AddControllersWithViews(options=> options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
         }
 

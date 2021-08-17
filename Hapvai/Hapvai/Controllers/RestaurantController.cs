@@ -47,10 +47,13 @@ namespace Hapvai.Controllers
         public IActionResult Add()
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var isUserOwner = this.context.Owners
+                               .Any(d => d.UserId == userId);
 
+            if (!isUserOwner) {
 
-            var usIsOwner = this.context.Owners
-                            .Any(d => d.UserId == userId);
+                return RedirectToAction("Create", "Owner");
+            }
 
             if (!this.context.Categories.Any())
             {
@@ -69,6 +72,7 @@ namespace Hapvai.Controllers
 
             return View(new RestaurantFormModel { Categories = this.context.Categories });
         }
+
 
         [HttpPost]
         [Authorize]
