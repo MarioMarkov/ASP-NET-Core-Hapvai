@@ -2,10 +2,12 @@
 using Hapvai.Data.Models;
 using Hapvai.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Hapvai.Controllers
@@ -19,9 +21,11 @@ namespace Hapvai.Controllers
             this.context = context;
         }
 
+
+        
         //public IActionResult Order()
         //{
-            
+
         //}
 
 
@@ -42,7 +46,12 @@ namespace Hapvai.Controllers
         [Authorize]
         public IActionResult Add()
         {
-           
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            var usIsOwner = this.context.Owners
+                            .Any(d => d.UserId == userId);
+
             if (!this.context.Categories.Any())
             {
                 var categories = new List<Category>() {

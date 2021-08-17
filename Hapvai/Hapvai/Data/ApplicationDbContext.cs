@@ -8,8 +8,7 @@ using System.Text;
 
 namespace Hapvai.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
-    {
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>  {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -69,7 +68,7 @@ namespace Hapvai.Data
 
             builder
                .Entity<Owner>()
-               .HasOne<User>()
+               .HasOne<IdentityUser>()
                .WithOne()
                .HasForeignKey<Owner>(d => d.UserId)
                .OnDelete(DeleteBehavior.Restrict);

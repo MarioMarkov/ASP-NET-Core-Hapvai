@@ -1,4 +1,5 @@
 using Hapvai.Data;
+using Hapvai.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,8 +34,21 @@ namespace Hapvai
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services
+             .AddDefaultIdentity<IdentityUser>(options =>
+             {
+                 options.Password.RequireDigit = false;
+                 options.Password.RequireLowercase = false;
+                 options.Password.RequireNonAlphanumeric = false;
+                 options.Password.RequireUppercase = false;
+             })
+             .AddRoles<IdentityRole>()
+              .AddEntityFrameworkStores<ApplicationDbContext>(); ;
+
+
+
+
+
             services.AddControllersWithViews(options=> options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
         }
 

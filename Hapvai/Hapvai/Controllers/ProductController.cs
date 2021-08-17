@@ -1,6 +1,7 @@
 ﻿using Hapvai.Data;
 using Hapvai.Data.Models;
 using Hapvai.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Hapvai.Controllers
         {
             this.context = context;
         }
+
+        [Authorize]
         public IActionResult Add()
         {
             if (!this.context.Foodtypes.Any()) {
@@ -34,7 +37,7 @@ namespace Hapvai.Controllers
 
             return View(new ProductFormModel { Foodtypes = this.context.Foodtypes });
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Add(ProductFormModel data)
         {
