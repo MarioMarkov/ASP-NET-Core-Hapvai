@@ -86,7 +86,7 @@ namespace Hapvai.Controllers
                 CloseTime = data.CloseTime,
                 ImageUrl = data.ImageUrl,
                 CategoryId = data.CategoryId,
-
+                OwnerId = data.OwnerId
             };
 
             this.context.Restaurants.Add(restaurant);

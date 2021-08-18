@@ -32,7 +32,7 @@
             }
         </select>
     </div>
-
+    <input type="hidden" asp-for="OwnerId" value="@this.User.FindFirst(ClaimTypes.NameIdentifier).Value" />
     <input type="submit"  class="btn btn-primary mt-3" value="Save" />
 </form>
 
