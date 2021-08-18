@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Hapvai.Services
+{
+    public  interface IOwnerService
+    {
+        public bool IsDealer(string userId);
+
+        public int IdByUser(string userId);
+    }
+}

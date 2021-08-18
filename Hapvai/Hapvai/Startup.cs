@@ -1,5 +1,6 @@
 using Hapvai.Data;
 using Hapvai.Data.Models;
+using Hapvai.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -46,6 +47,8 @@ namespace Hapvai
               .AddEntityFrameworkStores<ApplicationDbContext>(); ;
 
             services.AddControllersWithViews(options=> options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
+            services.AddTransient<IOwnerService, OwnerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

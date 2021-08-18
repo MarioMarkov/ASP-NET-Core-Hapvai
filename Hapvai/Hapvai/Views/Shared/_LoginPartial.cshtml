@@ -1,17 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
+@inject IOwnerService ownerService
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <form id="selectLanguage" asp-controller="Owner" asp-action="Create" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
-           <button type="submit" >
-             Become Owner
-           </button>
-        </form>
-    </li>
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+    var userIsDealer = ownerService.IsDealer(userId);
+
+    @if (!userIsDealer)
+    {
+        <li class="nav-item">
+            <form class="nav-link text-dark" id="selectLanguage" asp-controller="Owner" asp-action="Create" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
+                <button  type="submit">
+                    Become Owner
+                </button>
+            </form>
+        </li>
+    }
+    else { 
+        <li class="nav-item">
+            <a href="/" class="nav-link text-dark">See my Restaurants</a>
+        </li>
+    }
+
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
