@@ -35,58 +35,76 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3 m-2">
+                @{ 
+                    var parameters = new Dictionary<string, string> { ["city"]= "sofia" };
+                    
+                }
                 <div class="card " style="width: 18rem; ">
-                    <a href="/">
+                    <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
                         <img style="height: 12rem" class=" card-img-top" src="https://www.easyjet.com/ejcms/cache/medialibrary/Images/JSS/Destinations/Hero/Bulgaria_Sofia_3840x2160.jpg?mw=1920&hash=D60A003DB2CBE907498A389A03B37A12E626A988" alt="Card image cap">
                         <h3 class="city-txt">Sofia</h3>
                     </a>
-                    
                 </div>
             </div>
             <div class="col-md-3 m-2">
+                @{
+                     parameters = new Dictionary<string, string> { ["city"] = "plovdiv" };
+                }
                 <div class="card " style="width: 18rem; ">
-                    <a href="/">
+                    <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
                         <img style="height: 12rem" class=" card-img-top" src="https://media.tacdn.com/media/attractions-splice-spp-674x446/06/96/47/12.jpg" alt="Card image cap">
                         <h3 class="city-txt">Plovdiv</h3>
                     </a>
-                    
+
                 </div>
             </div>
 
             <div class="col-md-3 m-2">
+                @{
+                    parameters = new Dictionary<string, string> { ["city"] = "burgas" };
+                }
                 <div class="card " style="width: 18rem; ">
-                    <a href="/">
+                    <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
                         <img style="height: 12rem" class=" card-img-top" src="https://blog.esky.bg/wp-content/uploads/2020/07/istock-1018199162.jpg" alt="Card image cap">
                         <h3 class="city-txt">Burgas</h3>
                     </a>
                 </div>
             </div>
             <div class="col-md-3 m-2">
+                @{
+                    parameters = new Dictionary<string, string> { ["city"] = "varna" };
+                }
                 <div class="card " style="width: 18rem; ">
-                    <a href="/">
+                    <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
                         <img style="height: 12rem" class="card-img-top" src="https://www.capital.bg/shimg/zx952y526_3916897.jpg" alt="Card image cap">
                         <h3 class="city-txt">Varna</h3>
                     </a>
-                    
+
                 </div>
             </div>
             <div class="col-md-3 m-2">
+                @{
+                    parameters = new Dictionary<string, string> { ["city"] = "stara zagora" };
+                }
                 <div class="card " style="width: 18rem;">
-                    <a href="#">
+                    <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
                         <img style="height: 12rem" class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/3/33/Samarsko_Zname_Panorama.jpg" alt="Card image cap">
                         <h3 class="city-txt">Stara Zagora</h3>
                     </a>
-                    
+
                 </div>
             </div>
 
             <div class="col-md-3 m-2">
+                @{
+                    parameters = new Dictionary<string, string> { ["city"] = "ruse" };
+                }
                 <div class="card " style="width: 18rem;">
-                    <a href="/">
+                    <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
                         <img style="height: 12rem" class="card-img-top" src="https://webnews.bg/uploads/images/35/9135/369135/768x432.jpg?_=1531986512" alt="Card image cap">
                         <h3 class="city-txt">Ruse</h3>
                     </a>
-                    
+
                 </div>
             </div>
         </div>

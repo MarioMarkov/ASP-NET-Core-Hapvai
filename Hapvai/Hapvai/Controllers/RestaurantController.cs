@@ -29,7 +29,7 @@ namespace Hapvai.Controllers
         //}
 
 
-        public IActionResult All() 
+        public IActionResult All(string city) 
         {
             var restaurants = this.context.Restaurants.Select(r=> new RestaurantViewModel { 
                 Name = r.Name,
@@ -39,6 +39,7 @@ namespace Hapvai.Controllers
                 ImageUrl = r.ImageUrl
             });
 
+            restaurants = restaurants.Where(r => r.Location.ToLower() == city);
 
             return View(restaurants);
         }
