@@ -25,8 +25,6 @@ namespace Hapvai.Models
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
-        public int OwnerId { get; init; }
-
         public IEnumerable<Category> Categories { get; set; }
 
     }

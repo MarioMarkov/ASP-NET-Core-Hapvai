@@ -78,6 +78,10 @@ namespace Hapvai.Controllers
         [Authorize]
         public IActionResult Add(RestaurantFormModel data)
         {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var owner = this.context.Owners.FirstOrDefault(o => o.UserId == userId);
+            
+
             var restaurant = new Restaurant()
             {
                 Name = data.Name,
@@ -86,7 +90,7 @@ namespace Hapvai.Controllers
                 CloseTime = data.CloseTime,
                 ImageUrl = data.ImageUrl,
                 CategoryId = data.CategoryId,
-                OwnerId = data.OwnerId
+                OwnerId = owner.Id
             };
 
             this.context.Restaurants.Add(restaurant);
