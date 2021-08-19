@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IOwnerService ownerService
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,6 +10,11 @@
     <title>@ViewData["Title"] - Hapvai</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            background-color: #F1F1F1;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -18,12 +27,20 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Add">Add a Restaurant</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                         {  
+                            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                            var userIsOwner = ownerService.IsDealer(userId);
+                            if (userIsOwner)
+                             {
+                                 <li class="nav-item">
+                                   <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Add">Add a Restaurant</a>
+                                </li>
+                             }
+                        }
+
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="All">All Restaurants</a>
                         </li>
@@ -36,7 +53,27 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
+        @if (SignInManager.IsSignedIn(User))
+        {
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome To Hapvai</h1>
+            <p class="lead">The best place where you can order food from your favorite restaurants.</p>
+            <hr class="my-4">
+            <p>Find your favourite place</p>
+            <p class="lead">
+                <div class="input-group rounded">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                           aria-describedby="search-addon" />
+                    <span class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </p>
+        </div>
+        }
+        
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
