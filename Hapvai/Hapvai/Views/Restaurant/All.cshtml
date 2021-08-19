@@ -1,23 +1,56 @@
 ﻿@model IEnumerable<RestaurantViewModel>
 
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.1s;
+        border-radius: 5px; /* 5px rounded corners */
+        width:20rem;
+        
+    }
+     
+  
+    /* Add rounded corners to the top left and the top right corner of the image */
+    img {
+        border-radius: 5px 5px 0 0;
+    }
+    .category {
+        font-weight:300
+    }
+    /* [1] The container */
+    .img-hover-zoom {
+        height: 300px; /* [1.1] Set it as per your need */
+        overflow: hidden; /* [1.2] Hide the overflowing of child elements */
+    }
+
+        /* [2] Transition property for smooth transformation of images */
+        .img-hover-zoom img {
+            transition: transform .5s ease;
+        }
+
+        /* [3] Finally, transforming the image when container gets hovered */
+        .img-hover-zoom:hover img {
+            transform: scale(1.3);
+        }
+</style>
+<div class="container">
 
     <div class="row">
-
-
         @foreach (var restaurant in Model)
-        {
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img style="height : 15rem;" class="card-img-top rounded" src="@restaurant.ImageUrl" alt="Card image cap">
+        {<div class="col-md-4">
 
-                <div class="card-body pt-1">
-                    <h5 class="card-title text-center">@restaurant.Name</h5>
-                    <p class="card-text">Category: @restaurant.Category</p>
-                    <p class="card-text mt-0">Location: @restaurant.Location</p>
-                    <a href="#" class="btn btn-primary">Order</a>
+                <div class="card">
+                    <div class="img-hover-zoom" >
+                        <img src="@restaurant.ImageUrl" style="width:100%"> alt="This zooms-in really well and smooth">
+                    </div>
+                    <div class="container">
+                        <h4>@restaurant.Name</h4>
+                        <p class="category">@restaurant.Category</p>
+                    </div>
                 </div>
             </div>
-        </div>
-            
+
         }
     </div>
+
+</div>
