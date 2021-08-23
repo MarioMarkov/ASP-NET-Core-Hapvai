@@ -6,9 +6,9 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-    var userIsDealer = ownerService.IsDealer(userId);
+    var userIsOwner = ownerService.IsDealer(userId);
 
-    @if (!userIsDealer)
+    @if (!userIsOwner)
     {
         <li class="nav-item">
             <form class="nav-link text-dark" id="selectLanguage" asp-controller="Owner" asp-action="Create" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">

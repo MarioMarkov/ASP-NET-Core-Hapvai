@@ -22,18 +22,7 @@ namespace Hapvai.Controllers
         [Authorize]
         public IActionResult Add()
         {
-            if (!this.context.Foodtypes.Any()) {
-                var foodTypes = new List<Foodtype>() {
-                    new Foodtype {Name = "Salad"},
-                    new Foodtype {Name = "Main Course"},
-                    new Foodtype {Name = "Pasta"},
-                    new Foodtype {Name = "Soup"},
-                    new Foodtype {Name = "Dessert"}
-                };
-
-                this.context.Foodtypes.AddRange(foodTypes);
-                this.context.SaveChanges();
-            }
+           
 
             return View(new ProductFormModel { Foodtypes = this.context.Foodtypes });
         }

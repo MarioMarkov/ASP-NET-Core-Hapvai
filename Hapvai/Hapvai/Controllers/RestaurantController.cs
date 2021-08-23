@@ -23,28 +23,28 @@ namespace Hapvai.Controllers
 
 
         
-        //public IActionResult Order()
-        //{
+        public IActionResult Show(int id)
+        {
+            var data = this.context.Restaurants.FirstOrDefault(r => r.Id == id);
 
-        //}
+            var products = new List<Product>() {
+                new Product { Name = "Musaka",FoodtypeId=1,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99},
+                new Product { Name = "Musaka",FoodtypeId=1,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99},
+                new Product { Name = "Musaka",FoodtypeId=1,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99}
+            };
+            var restaurant = new RestaurantShowModel() { 
+                Name= data.Name,
+                ImageUrl = data.ImageUrl,
+                Products = products //data.Products
+            };
+
+            return View(restaurant);
+        }
 
 
         public IActionResult All(string city) 
         {
-            if (!this.context.Categories.Any())
-            {
-                var categories = new List<Category>() {
-                    new Category(){ Name ="Pizzaria"},
-                    new Category(){ Name ="Meditarenian"},
-                    new Category(){ Name ="Fish"},
-                    new Category(){ Name ="Bulgarian"},
-                    new Category(){ Name ="Chineese"},
-
-                };
-
-                this.context.Categories.AddRange(categories);
-                this.context.SaveChanges();
-            }
+           
             if (!this.context.Restaurants.Any())
             {
                 var data = new List<Restaurant>() {
@@ -83,6 +83,7 @@ namespace Hapvai.Controllers
                 this.context.SaveChanges();
             }
             var restaurants = this.context.Restaurants.Select(r=> new RestaurantViewModel { 
+                Id = r.Id,
                 Name = r.Name,
                 Category = r.Category.Name,
                 Location = r.Location,

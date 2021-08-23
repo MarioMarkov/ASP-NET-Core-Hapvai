@@ -1,14 +1,16 @@
 ﻿using Hapvai.Data.Models;
+using Hapvai.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Hapvai.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>  {
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser> {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -73,8 +75,13 @@ namespace Hapvai.Data
                .HasForeignKey<Owner>(d => d.UserId)
                .OnDelete(DeleteBehavior.Restrict);
 
+            
             base.OnModelCreating(builder);
+
+            
         }
+
+       
 
     }
 }
