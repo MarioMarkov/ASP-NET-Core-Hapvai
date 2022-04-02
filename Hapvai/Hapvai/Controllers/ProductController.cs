@@ -22,7 +22,20 @@ namespace Hapvai.Controllers
         [Authorize]
         public IActionResult Add()
         {
-           
+            if (!this.context.Foodtypes.Any())
+            {
+                var foodTypes = new List<Foodtype>() {
+                    new Foodtype(){ Name ="Pizza"},
+                    new Foodtype(){ Name ="Fish"},
+                    new Foodtype(){ Name ="Mandja"},
+                    new Foodtype(){ Name ="Meat"},
+                    new Foodtype(){ Name ="Dessert"},
+
+                };
+
+                this.context.Foodtypes.AddRange(foodTypes);
+                this.context.SaveChanges();
+            }
 
             return View(new ProductFormModel { Foodtypes = this.context.Foodtypes });
         }
@@ -30,6 +43,9 @@ namespace Hapvai.Controllers
         [HttpPost]
         public IActionResult Add(ProductFormModel data)
         {
+            
+
+
             var product = new Product()
             {
                 Name = data.Name,
@@ -44,6 +60,17 @@ namespace Hapvai.Controllers
 
             return Redirect("/");
         }
+
+        public IActionResult AllProductsForRestaurant(int restaurantId) 
+        {
+            var restaurant = this.context.Restaurants.FirstOrDefault(r => r.Id == restaurantId);
+
+            var products = this.context.Products.All(p => p.RestaurantId == restaurantId);
+            ////var productsShow = new List<ProductShowModel>() { 
+            ////products};
+            return View(products);
+        }
+
 
     }
 }

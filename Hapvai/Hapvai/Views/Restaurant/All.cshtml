@@ -55,30 +55,41 @@
         </p>
     </div>
     <div class="row">
-        @foreach (var restaurant in Model)
-        {<div class="col-md-4">
+        @if (Model.Any())
+        {
+            @foreach (var restaurant in Model)
+            {<div class="col-md-4">
 
-                <div class="card">
-                    <div class="img-hover-zoom" >
-                        <img src="@restaurant.ImageUrl" style="width:100%"> alt="This zooms-in really well and smooth">
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <h4 class="col-6 mb-0 restaurantName">@restaurant.Name</h4>
-                            <a  asp-controller="Restaurant" asp-action="Show" asp-route-id="@restaurant.Id" class="mt-2 col-6 btn btn-primary">Order</a>
+                    <div class="card">
+                        <div class="img-hover-zoom">
+                            <img src="@restaurant.ImageUrl" style="width:100%">
                         </div>
-                        <div class="row"> 
-                            <p class="col-6 category mb-1">@restaurant.Category</p>
+                        <div class="container">
+                            <div class="row">
+                                <h4 class="col-6 mb-0 restaurantName">@restaurant.Name</h4>
+                                <a asp-controller="Restaurant" asp-action="Show" asp-route-id="@restaurant.Id" class="mt-2 col-6 btn btn-primary">Order</a>
+                            </div>
+                            <div class="row">
+                                <p class="col-6 category mb-1">@restaurant.Category</p>
+                            </div>
+
+
                         </div>
-                       
-                        
+
+
                     </div>
-                    
-                    
                 </div>
-            </div>
 
-        } 
+            }
+
+
+
+        }
+        else
+        {
+            <h2>No restaurants</h2>
+   }
+
     </div>
 
 </div>

@@ -19,10 +19,6 @@ namespace Hapvai.Controllers
             this.context = context;
         }
 
-
-
-
-
         [Authorize]
         [HttpPost]
         public IActionResult Create() 

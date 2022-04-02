@@ -188,7 +188,7 @@
             <div class="food-card_content">
                 <div class="food-card_title-section">
                     <a href="#!" class="food-card_title">@p.Name</a>
-                    <a href="#!" class="food-card_author">Burger</a>
+                    <a href="#!" class="food-card_author">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</a>
                 </div>
                 <div class="food-card_bottom-section">
                     <div class="space-between">
@@ -196,7 +196,7 @@
                             <span class="fa fa-fire"></span> 220 - 280 Kcal
                         </div>
                         <div class="pull-right">
-                            <span class="badge badge-success">@p.Foodtype.Name</span>
+                            @*<span class="badge badge-success">@p.Foodtype.Name</span>*@
                         </div>
                     </div>
                     <hr>

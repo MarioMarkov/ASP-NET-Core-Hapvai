@@ -47,15 +47,19 @@
         <p class="lead">The best place where you can order food from your favorite restaurants.</p>
         <hr class="my-4">
         <p>Find your favourite place</p>
-        <p class="lead">
-            <div class="input-group rounded">
-                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                       aria-describedby="search-addon" />
-                <span class="input-group-text border-0" id="search-addon">
-                    <i class="fas fa-search"></i>
-                </span>
-            </div>
-        </p>
+        <div class="lead">
+
+            
+            <form asp-controller="Restaurant" asp-action="AllRestaurantsFromSearch">
+                <div class="input-group rounded">
+                    <input type="search" class="form-control rounded" placeholder="Search for a restaurant..." aria-label="Search"
+                           aria-describedby="search-addon" />
+                    <button class="btn btn-outline-primary">Search</button>
+                </div>
+            </form>
+                
+            
+        </div>
     </div>
     <h3>Find Restaurants in these cities: </h3>
     <div class="row pl-2">
@@ -73,7 +77,7 @@
         </div>
         <div class="col-md-4">
             @{
-                parameters = new Dictionary<string, string> { ["city"] = "plovdiv" };
+                parameters["city"] = "plovdiv" ;
             }
             <div class="card" style="width: 19rem; ">
                 <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
@@ -86,7 +90,7 @@
 
         <div class="col-md-4">
             @{
-                parameters = new Dictionary<string, string> { ["city"] = "burgas" };
+                parameters["city"] = "burgas" ;
             }
             <div class="card " style="width: 19rem; ">
                 <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
@@ -99,7 +103,7 @@
     <div class="row pl-2">
         <div class="col-md-4 ">
             @{
-                parameters = new Dictionary<string, string> { ["city"] = "varna" };
+                parameters["city"] = "varna" ;
             }
             <div class="card " style="width: 19rem; ">
                 <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
@@ -111,7 +115,7 @@
         </div>
         <div class="col-md-4 ">
             @{
-                parameters = new Dictionary<string, string> { ["city"] = "stara zagora" };
+                parameters["city"] = "stara zagora" ;
             }
             <div class="card " style="width: 19rem; ">
                 <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">
@@ -124,7 +128,7 @@
 
         <div class="col-md-4 ">
             @{
-                parameters = new Dictionary<string, string> { ["city"] = "ruse" };
+                parameters ["city"] = "ruse" ;
             }
             <div class="card " style="width: 19rem;">
                 <a asp-controller="Restaurant" asp-action="All" asp-all-route-data="parameters">

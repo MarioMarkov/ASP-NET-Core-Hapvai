@@ -14,5 +14,8 @@ namespace Hapvai.Models
 
         public IEnumerable<Product> Products { get; init; } = new List<Product>();
 
+        public IEnumerable<Foodtype> Foodtypes { get; init; } = new List<Foodtype>();
+
+
     }
 }
