@@ -33,12 +33,24 @@ namespace Hapvai.Controllers
             //    new Product { Name = "Musaka",FoodtypeId=2,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99},
             //    new Product { Name = "Musaka",FoodtypeId=3,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99}
             //};
-    
+
             //if (!this.context.Products.Any()) 
             //{
             //    this.context.AddRange(products);
             //    this.context.SaveChanges();
             //}
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var isUserOwner = this.context.Owners
+                               .Any(d => d.UserId == userId);
+           
+            if (isUserOwner) 
+            {
+                var owner = this.context.Owners.FirstOrDefault(o => o.UserId == userId);
+                var showEdit = this.context.Restaurants.Any(r => id == owner.Id);
+                
+                ViewData["showEdit"] = showEdit;
+                
+            }
             var data = this.context.Restaurants.FirstOrDefault(r => r.Id == id);
             var products = this.context.Products.Where(p => p.RestaurantId == id);
 
@@ -214,6 +226,8 @@ namespace Hapvai.Controllers
 
             return View("All", await restaurantsView.ToListAsync());
         }
+
+       
 
 
     }

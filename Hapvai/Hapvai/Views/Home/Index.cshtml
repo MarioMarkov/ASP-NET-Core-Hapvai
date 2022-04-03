@@ -50,11 +50,11 @@
         <div class="lead">
 
             
-            <form asp-controller="Restaurant" asp-action="AllRestaurantsFromSearch">
+            <form method="get" asp-controller="Restaurant" asp-action="AllRestaurantsFromSearch">
                 <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search for a restaurant..." aria-label="Search"
+                    <input name="SearchString" type="search" class="form-control rounded" placeholder="Search for a restaurant..." aria-label="Search"
                            aria-describedby="search-addon" />
-                    <button class="btn btn-outline-primary">Search</button>
+                    <input  type="submit" value="Search" class="btn btn-outline-primary"/>
                 </div>
             </form>
                 

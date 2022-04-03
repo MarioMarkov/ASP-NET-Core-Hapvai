@@ -21,6 +21,8 @@ namespace Hapvai.Models
         [Display(Name = "Foodtype")]
         public int FoodTypeId { get; init; }
 
+        public int RestaurantId { get; set; }
+
         public IEnumerable<Foodtype> Foodtypes{ get; set; }
     }
 }

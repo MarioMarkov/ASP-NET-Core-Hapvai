@@ -20,8 +20,9 @@ namespace Hapvai.Controllers
         }
 
         [Authorize]
-        public IActionResult Add()
+        public IActionResult Add(int id)
         {
+
             if (!this.context.Foodtypes.Any())
             {
                 var foodTypes = new List<Foodtype>() {
@@ -41,10 +42,8 @@ namespace Hapvai.Controllers
         }
         [Authorize]
         [HttpPost]
-        public IActionResult Add(ProductFormModel data)
+        public IActionResult Add(ProductFormModel data, int id)
         {
-            
-
 
             var product = new Product()
             {
@@ -52,6 +51,7 @@ namespace Hapvai.Controllers
                 Price = data.Price,
                 ImageUrl = data.ImageUrl,
                 FoodtypeId = data.FoodTypeId,
+                RestaurantId = id
                 
             };
 

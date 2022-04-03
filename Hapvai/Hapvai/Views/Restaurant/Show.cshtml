@@ -154,6 +154,67 @@
                     box-shadow: none;
                 }
 
+    .quantity {
+        display: inline-block;
+    }
+
+        .quantity .input-text.qty {
+            width: 35px;
+            height: 39px;
+            padding: 0 5px;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid #efefef;
+        }
+
+        .quantity.buttons_added {
+            text-align: left;
+            position: relative;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+            .quantity.buttons_added input {
+                display: inline-block;
+                margin: 0;
+                vertical-align: top;
+                box-shadow: none;
+            }
+
+            .quantity.buttons_added .minus,
+            .quantity.buttons_added .plus {
+                padding: 7px 10px 8px;
+                height: 41px;
+                background-color: #ffffff;
+                border: 1px solid #efefef;
+                cursor: pointer;
+            }
+
+            .quantity.buttons_added .minus {
+                border-right: 0;
+            }
+
+            .quantity.buttons_added .plus {
+                border-left: 0;
+            }
+
+                .quantity.buttons_added .minus:hover,
+                .quantity.buttons_added .plus:hover {
+                    background: #eeeeee;
+                }
+
+        .quantity input::-webkit-outer-spin-button,
+        .quantity input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            margin: 0;
+        }
+
+        .quantity.buttons_added .minus:focus,
+        .quantity.buttons_added .plus:focus {
+            outline: none;
+        }
+
     @@media (min-width: 992px) {
         .food-card--vertical {
             display: -webkit-box;
@@ -170,48 +231,66 @@
                 object-fit: cover;
             }
     }
+
+    .grid-container {
+        display: grid;
+    }
 </style>
 
 
 <h1>This is @Model.Name</h1>
-<a class="btn btn-primary" asp-area="" asp-controller="Product" asp-action="Add">Add a Product</a>
+<a class="btn btn-primary" asp-area="" asp-controller="Product" asp-action="Add" asp-route-id="@(ViewContext.RouteData.Values["id"])">Add a Product</a>
 
-@foreach (var p in Model.Products)
-{
+@{
+    int i = 0;
+}
+<div class="container">
 
-    <div class="col-sm-6 col-md-6 col-lg-6">
-        <div class="food-card food-card--vertical">
-            <div class="food-card_img">
-                <img src="https://www.supichka.com/files/images/1242/musaka_2.jpg" alt="">
-                <a href="#!"><i class="fa fa-heart"></i></a>
-            </div>
-            <div class="food-card_content">
-                <div class="food-card_title-section">
-                    <a href="#!" class="food-card_title">@p.Name</a>
-                    <a href="#!" class="food-card_author">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</a>
+    @foreach (var p in Model.Products)
+    {
+        if (i == 0 || i==2)
+        {
+
+        @:</div><div class="row">
+            i = 0;
+
+        }
+
+        <div class="col-sm-6 col-md-6 col-lg-6 ">
+
+            <div class="food-card food-card--vertical">
+                <div class="food-card_img">
+                    <img src="@p.ImageUrl" alt="">
+                    <a href="#!"><i class="fa fa-heart"></i></a>
                 </div>
-                <div class="food-card_bottom-section">
-                    <div class="space-between">
-                        <div>
-                            <span class="fa fa-fire"></span> 220 - 280 Kcal
-                        </div>
-                        <div class="pull-right">
-                            @*<span class="badge badge-success">@p.Foodtype.Name</span>*@
-                        </div>
+                <div class="food-card_content">
+                    <div class="food-card_title-section">
+                        <a href="#!" class="food-card_title">@p.Name</a>
+                        <p>@(ViewData["showEdit"]) </p>
+                        <span class="badge badge-success">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</span>
                     </div>
-                    <hr>
-                    <div class="space-between">
-                        <div class="food-card_price">
-                            <span>@p.Price$</span>
+                    <div class="food-card_bottom-section">
+                        <div class="space-between">
+                            <div>
+                                <span class="fa fa-fire"></span> 220 - 280 Kcal
+                            </div>
+                            <div class="pull-right">
+                                @*<span class="badge badge-success">@p.Foodtype.Name</span>*@
+                                <a asp-controller="Product" asp-action="Order" asp-route-id="@p.Id" style="color:white" class="btn btn-primary">Order</a>
+                            </div>
                         </div>
-                        <div class="food-card_order-count">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary minus-btn" type="button" id="button-addon1"><i class="fa fa-minus"></i></button>
-                                </div>
-                                <input type="text" class="form-control input-manulator" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="0">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary add-btn" type="button" id="button-addon1"><i class="fa fa-plus"></i></button>
+                        <hr>
+                        <div class="space-between">
+                            <div class="food-card_price">
+                                <span>@p.Price$</span>
+                            </div>
+                            <div class="food-card_order-count">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <div class="quantity buttons_added">
+                                            <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -219,8 +298,14 @@
                 </div>
             </div>
         </div>
-    </div>
+
+    i++;
+
 }
+    </div>
+
+
+
 
 
 
