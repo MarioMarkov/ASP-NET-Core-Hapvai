@@ -253,7 +253,6 @@
 
         @:</div><div class="row">
             i = 0;
-
         }
 
         <div class="col-sm-6 col-md-6 col-lg-6 ">
@@ -266,7 +265,12 @@
                 <div class="food-card_content">
                     <div class="food-card_title-section">
                         <a href="#!" class="food-card_title">@p.Name</a>
-                        <p>@(ViewData["showEdit"]) </p>
+                        <p style="float:right;">
+                            @if ((bool)(ViewData["showEdit"])) {
+                                <button class="btn btn-primary">Edit</button>
+                            
+                            }
+                        </p>
                         <span class="badge badge-success">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</span>
                     </div>
                     <div class="food-card_bottom-section">

@@ -46,7 +46,7 @@ namespace Hapvai.Controllers
             if (isUserOwner) 
             {
                 var owner = this.context.Owners.FirstOrDefault(o => o.UserId == userId);
-                var showEdit = this.context.Restaurants.Any(r => id == owner.Id);
+                bool showEdit = this.context.Restaurants.Any(r => id == owner.Id);
                 
                 ViewData["showEdit"] = showEdit;
                 
