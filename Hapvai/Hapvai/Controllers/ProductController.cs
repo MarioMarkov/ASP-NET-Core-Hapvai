@@ -71,6 +71,23 @@ namespace Hapvai.Controllers
             return View(products);
         }
 
+        public IActionResult Edit(int id)
+        {
+            var product = this.context.Products.FirstOrDefault(p => p.Id == id);
+
+            var productShow = new ProductEditModel 
+            {
+                Name = product.Name,
+                FoodtypeId = product.FoodtypeId,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Foodtypes = this.context.Foodtypes
+            };
+
+
+            return View(productShow);
+        }
+
 
     }
 }
