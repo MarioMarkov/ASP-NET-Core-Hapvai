@@ -9,7 +9,7 @@ namespace Hapvai.Models
 {
     public class ProductEditModel
     {
-
+        public int ProductId { get; set; }
         public double Price { get; set; }
 
         public string ImageUrl { get; set; }

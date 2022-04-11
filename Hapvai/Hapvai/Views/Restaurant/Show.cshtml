@@ -266,8 +266,13 @@
                     <div class="food-card_title-section">
                         <a href="#!" class="food-card_title">@p.Name</a>
                         <p style="float:right;">
-                            @if ((bool)(ViewData["showEdit"])) {
-                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@p.Id" class="btn btn-primary">Edit</a>
+                            @if ((bool)(ViewData["showEdit"]))
+                            {
+                                     
+                                    var parameters = new Dictionary<string, string> { ["restaurantId"] = Model.RestaurantId.ToString() };
+
+                                
+                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@p.Id" asp-all-route-data="parameters" class="btn btn-primary">Edit</a>
                             }
                         </p>
                         <span class="badge badge-success">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</span>

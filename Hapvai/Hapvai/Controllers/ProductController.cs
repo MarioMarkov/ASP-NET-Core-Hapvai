@@ -50,7 +50,7 @@ namespace Hapvai.Controllers
                 Name = data.Name,
                 Price = data.Price,
                 ImageUrl = data.ImageUrl,
-                FoodtypeId = data.FoodTypeId,
+                FoodtypeId = data.FoodtypeId,
                 RestaurantId = id
                 
             };
@@ -77,6 +77,7 @@ namespace Hapvai.Controllers
 
             var productShow = new ProductEditModel 
             {
+                ProductId = product.Id,
                 Name = product.Name,
                 FoodtypeId = product.FoodtypeId,
                 ImageUrl = product.ImageUrl,
@@ -86,6 +87,31 @@ namespace Hapvai.Controllers
 
 
             return View(productShow);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductEditModel data, int id)
+        {
+            var product = new Product()
+            {
+                
+                Name = data.Name,
+                Price = data.Price,
+                ImageUrl = data.ImageUrl,
+                FoodtypeId = data.FoodtypeId,
+                RestaurantId = id
+
+            };
+
+            var productFromDb =  this.context.Products.First(p=> p.Id == id);
+            productFromDb.Name = product.Name;
+            productFromDb.Price = product.Price;
+            productFromDb.ImageUrl = product.ImageUrl;
+            productFromDb.FoodtypeId = product.FoodtypeId;
+
+            await this.context.SaveChangesAsync();
+
+            return Redirect($"/Restaurant/Show/{id}");
         }
 
 

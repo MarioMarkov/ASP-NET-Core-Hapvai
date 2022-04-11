@@ -19,7 +19,7 @@ namespace Hapvai.Models
         public string ImageUrl { get; init; }
 
         [Display(Name = "Foodtype")]
-        public int FoodTypeId { get; init; }
+        public int FoodtypeId { get; init; }
 
         public int RestaurantId { get; set; }
 

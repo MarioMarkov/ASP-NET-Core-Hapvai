@@ -39,22 +39,28 @@ namespace Hapvai.Controllers
             //    this.context.AddRange(products);
             //    this.context.SaveChanges();
             //}
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var isUserOwner = this.context.Owners
-                               .Any(d => d.UserId == userId);
-           
-            if (isUserOwner) 
+
+            if (User.Identity.IsAuthenticated) 
             {
-                var owner = this.context.Owners.FirstOrDefault(o => o.UserId == userId);
-                bool showEdit = this.context.Restaurants.Any(r => id == owner.Id);
-                
-                ViewData["showEdit"] = showEdit;
-                
+                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var isUserOwner = this.context.Owners
+                               .Any(d => d.UserId == userId);
+                if (isUserOwner)
+                {
+                    var owner = this.context.Owners.FirstOrDefault(o => o.UserId == userId);
+                    bool showEdit = this.context.Restaurants.Any(r => id == owner.Id);
+
+                    ViewData["showEdit"] = showEdit;
+                }
+                else { ViewData["showEdit"] = false; }
             }
+            else { ViewData["showEdit"] = false; }
+
             var data = this.context.Restaurants.FirstOrDefault(r => r.Id == id);
             var products = this.context.Products.Where(p => p.RestaurantId == id);
 
             var restaurant = new RestaurantShowModel() { 
+                RestaurantId = data.Id,
                 Name= data.Name,
                 ImageUrl = data.ImageUrl,
                 Products = products,
@@ -115,7 +121,7 @@ namespace Hapvai.Controllers
                     Rating = r.Rating,
                     ImageUrl = r.ImageUrl
                 });
-                return View(allRestaurants);
+                return View( await allRestaurants.ToListAsync());
             }
             var restaurants = this.context.Restaurants.Where(r => r.Location.ToLower() == city).Select(r=> new RestaurantViewModel { 
                 Id = r.Id,
