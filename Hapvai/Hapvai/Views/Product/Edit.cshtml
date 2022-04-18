@@ -17,15 +17,15 @@
     </div>
     <div class="form-group">
         <label asp-for="FoodtypeId"></label>
-        <select asp-for="FoodtypeId" selected ="@Model.Foodtypes.FirstOrDefault(ft=> ft.Id == Model.FoodtypeId)" class="form-control">
+        <select asp-for="FoodtypeId" selected="@Model.Foodtypes.FirstOrDefault(ft=> ft.Id == Model.FoodtypeId)" class="form-control">
             @foreach (var type in Model.Foodtypes)
             {
                 <option value="@type.Id">@type.Name</option>
             }
         </select>
     </div>
-    <input id="productId" asp-for="ProductId" value ="@Model.ProductId" type="hidden" value="initialValue" />
-
+    <input id="productId" asp-for="ProductId" value="@Model.ProductId" type="hidden" value="initialValue" />
+    <input id="restaurantId" asp-for="RestaurantId" value="@Model.RestaurantId" type="hidden" value="initialValue" />
 
     <input type="submit" class="btn btn-primary mt-3" value="Save" />
 </form>

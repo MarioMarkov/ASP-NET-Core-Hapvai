@@ -2,6 +2,7 @@
 using Hapvai.Data.Models;
 using Hapvai.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Hapvai.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext context;
+        const string SessionOrderId = "_OrderId";
 
         public ProductController(ApplicationDbContext context)
         {
@@ -52,16 +54,16 @@ namespace Hapvai.Controllers
                 ImageUrl = data.ImageUrl,
                 FoodtypeId = data.FoodtypeId,
                 RestaurantId = id
-                
+
             };
 
             this.context.Products.Add(product);
             this.context.SaveChanges();
 
-            return Redirect("/");
+            return Redirect($"/Restaurant/Show/{id}");
         }
 
-        public IActionResult AllProductsForRestaurant(int restaurantId) 
+        public IActionResult AllProductsForRestaurant(int restaurantId)
         {
             var restaurant = this.context.Restaurants.FirstOrDefault(r => r.Id == restaurantId);
 
@@ -74,15 +76,16 @@ namespace Hapvai.Controllers
         public IActionResult Edit(int id)
         {
             var product = this.context.Products.FirstOrDefault(p => p.Id == id);
-
-            var productShow = new ProductEditModel 
+            var restaurantId = this.context.Restaurants.FirstOrDefault(r => r.Id == product.RestaurantId).Id;
+            var productShow = new ProductEditModel
             {
                 ProductId = product.Id,
                 Name = product.Name,
                 FoodtypeId = product.FoodtypeId,
                 ImageUrl = product.ImageUrl,
                 Price = product.Price,
-                Foodtypes = this.context.Foodtypes
+                Foodtypes = this.context.Foodtypes,
+                RestaurantId = restaurantId
             };
 
 
@@ -94,26 +97,59 @@ namespace Hapvai.Controllers
         {
             var product = new Product()
             {
-                
+
                 Name = data.Name,
                 Price = data.Price,
                 ImageUrl = data.ImageUrl,
                 FoodtypeId = data.FoodtypeId,
-                RestaurantId = id
+                RestaurantId = data.RestaurantId
 
             };
 
-            var productFromDb =  this.context.Products.First(p=> p.Id == id);
+            var productFromDb = this.context.Products.First(p => p.Id == id);
             productFromDb.Name = product.Name;
             productFromDb.Price = product.Price;
             productFromDb.ImageUrl = product.ImageUrl;
             productFromDb.FoodtypeId = product.FoodtypeId;
 
+
             await this.context.SaveChangesAsync();
 
-            return Redirect($"/Restaurant/Show/{id}");
+            return Redirect($"/Restaurant/Show/{productFromDb.RestaurantId}");
         }
 
+        //[HttpPost]
+        public async Task<IActionResult> Order(int id)
+        {
+            var productFromDb = this.context.Products.FirstOrDefault(p => p.Id == id);
+
+            if (HttpContext.Session.GetInt32(SessionOrderId) == null)
+            {
+                var order = new Order()
+                {
+                    RestaurantId = productFromDb.RestaurantId
+                };
+                
+                order.Products.Append(productFromDb);
+                
+
+                this.context.Orders.Add(order);
+                await this.context.SaveChangesAsync();
+                var orderFromDb= this.context.Orders.OrderBy(o=>o.Id).LastOrDefault();
+                var orderId = orderFromDb.Id;
+                HttpContext.Session.SetInt32(SessionOrderId, orderId);
+                
+            }
+            else 
+            {
+                var currentOrderId = HttpContext.Session.GetInt32(SessionOrderId);
+                this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId).Products.Append(productFromDb);
+                await this.context.SaveChangesAsync();
+            }
+
+
+            return Redirect($"/Restaurant/Show/{productFromDb.RestaurantId}");
+        }
 
     }
 }

@@ -20,9 +20,9 @@ namespace Hapvai.Data.Models
         [Required]
         public string Name { get; set; }
 
-        //CHANGE NULLABLE INT
+        
         [ForeignKey("RestaurantId")]
-        public int? RestaurantId { get; set; }
+        public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
 
 

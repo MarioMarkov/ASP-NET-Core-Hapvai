@@ -272,7 +272,7 @@
                                     var parameters = new Dictionary<string, string> { ["restaurantId"] = Model.RestaurantId.ToString() };
 
                                 
-                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@p.Id" asp-all-route-data="parameters" class="btn btn-primary">Edit</a>
+                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@p.Id"class="btn btn-primary">Edit</a>
                             }
                         </p>
                         <span class="badge badge-success">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</span>
@@ -284,7 +284,7 @@
                             </div>
                             <div class="pull-right">
                                 @*<span class="badge badge-success">@p.Foodtype.Name</span>*@
-                                <a asp-controller="Product" asp-action="Order" asp-route-id="@p.Id" style="color:white" class="btn btn-primary">Order</a>
+                                <a asp-controller="Product" asp-action="Order" asp-route-id="@p.Id" style="color:white" class="btn btn-primary">Add to order</a>
                             </div>
                         </div>
                         <hr>

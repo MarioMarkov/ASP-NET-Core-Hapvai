@@ -19,8 +19,8 @@ namespace Hapvai.Models
         public int FoodtypeId { get; init; }
         public Foodtype Foodtype { get; set; }
 
-        
 
+        public int RestaurantId { get; set; }
         public IEnumerable<Foodtype> Foodtypes { get; set; }
 
     }
