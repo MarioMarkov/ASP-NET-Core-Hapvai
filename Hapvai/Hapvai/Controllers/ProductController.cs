@@ -125,6 +125,7 @@ namespace Hapvai.Controllers
 
             if (HttpContext.Session.GetInt32(SessionOrderId) == null)
             {
+                
                 var order = new Order()
                 {
                     RestaurantId = productFromDb.RestaurantId
@@ -134,15 +135,19 @@ namespace Hapvai.Controllers
                 
 
                 this.context.Orders.Add(order);
+                
                 await this.context.SaveChangesAsync();
                 var orderFromDb= this.context.Orders.OrderBy(o=>o.Id).LastOrDefault();
                 var orderId = orderFromDb.Id;
+                productFromDb.OrderId = orderId;
                 HttpContext.Session.SetInt32(SessionOrderId, orderId);
-                
+                await this.context.SaveChangesAsync();
             }
             else 
             {
                 var currentOrderId = HttpContext.Session.GetInt32(SessionOrderId);
+                productFromDb.OrderId = currentOrderId;
+
                 this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId).Products.Append(productFromDb);
                 await this.context.SaveChangesAsync();
             }

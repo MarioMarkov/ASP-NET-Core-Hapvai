@@ -8,12 +8,13 @@ namespace Hapvai.Models
 {
     public class OrderViewModel
     {
+        public int OrderId { get; set; }
 
         public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
 
-        public IEnumerable<Product> Products { get; init; } = new List<Product>();
-        
+        public IList<Product> Products { get; set; }
+
 
     }
 }

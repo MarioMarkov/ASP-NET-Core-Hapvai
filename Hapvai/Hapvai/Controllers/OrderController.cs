@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hapvai.Data;
+using Hapvai.Data.Models;
+using Hapvai.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,11 +12,32 @@ namespace Hapvai.Controllers
 {
     public class OrderController : Controller
     {
-        // GET: OrderController
+        private readonly ApplicationDbContext context;
+        const string SessionOrderId = "_OrderId";
+
+        public OrderController(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
+
         public ActionResult Index()
         {
-           
-            return View();
+            var currentOrderId = HttpContext.Session.GetInt32(SessionOrderId);
+            if (currentOrderId == null) 
+            {
+                return View();
+            }
+            var orderFromDb = this.context.Orders.FirstOrDefault(o=> o.Id == currentOrderId);
+            var products = this.context.Products.Where(p => p.OrderId == currentOrderId).ToList();
+
+            var orderView = new OrderViewModel() 
+            {
+                OrderId = orderFromDb.Id,
+                RestaurantId = orderFromDb.Id,
+                Products = products
+            };
+
+            return View(orderView);
         }
 
         // GET: OrderController/Details/5
