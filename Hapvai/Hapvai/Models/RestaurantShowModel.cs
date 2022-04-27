@@ -17,6 +17,6 @@ namespace Hapvai.Models
 
         public IEnumerable<Foodtype> Foodtypes { get; init; } = new List<Foodtype>();
 
-
+        public int Qunantity { get; set; }
     }
 }

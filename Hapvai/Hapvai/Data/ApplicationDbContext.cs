@@ -21,9 +21,12 @@ namespace Hapvai.Data
         public DbSet<Product> Products { get; init; }
         public DbSet<Foodtype> Foodtypes { get; init; }
         public DbSet<Owner> Owners { get; init; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            
+
             builder
                 .Entity<Restaurant>()
                 .HasMany(r => r.Products)
@@ -52,16 +55,18 @@ namespace Hapvai.Data
                 .HasForeignKey(o => o.RestaurantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .Entity<Order>()
-                .HasMany(o => o.Products);
+            builder.Entity<OrderProduct>().HasKey(op => new { op.OrderId, op.ProductId });
+
+            builder.Entity<OrderProduct>()
+                .HasOne<Product>(op => op.Product)
+                .WithMany(o => o.OrderProducts)
+                .HasForeignKey(o => o.ProductId);
 
 
-            builder
-                 .Entity<Product>()
-                 .HasOne(p => p.Order)
-                 .WithMany(p => p.Products)
-                 .HasForeignKey(p=> p.OrderId);
+            builder.Entity<OrderProduct>()
+                .HasOne<Order>(op => op.Order)
+                .WithMany(p => p.OrderProducts)
+                .HasForeignKey(o => o.OrderId);
 
             builder
                 .Entity<Owner>()

@@ -4,6 +4,7 @@ using Hapvai.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,8 @@ namespace Hapvai.Controllers
                 Price = data.Price,
                 ImageUrl = data.ImageUrl,
                 FoodtypeId = data.FoodtypeId,
-                RestaurantId = id
+                RestaurantId = id,
+                
 
             };
 
@@ -125,35 +127,38 @@ namespace Hapvai.Controllers
 
             if (HttpContext.Session.GetInt32(SessionOrderId) == null)
             {
-                
+
                 var order = new Order()
                 {
-                    RestaurantId = productFromDb.RestaurantId
+                    RestaurantId = productFromDb.RestaurantId,
+                    
                 };
-                
-                order.Products.Append(productFromDb);
-                
 
-                this.context.Orders.Add(order);
+                //order.Products.Append(productFromDb);
+
                 
+                this.context.Orders.Add(order);
+
                 await this.context.SaveChangesAsync();
-                var orderFromDb= this.context.Orders.OrderBy(o=>o.Id).LastOrDefault();
+                //productFromDb.Orders.Append(order);
+                var orderFromDb = this.context.Orders.OrderBy(o => o.Id).LastOrDefault();
                 var orderId = orderFromDb.Id;
-                productFromDb.OrderId = orderId;
+                //productFromDb.OrderId = orderId;
                 HttpContext.Session.SetInt32(SessionOrderId, orderId);
+                this.context.OrderProducts.Add(new OrderProduct { OrderId = orderId,ProductId= productFromDb.Id });
                 await this.context.SaveChangesAsync();
             }
-            else 
+            else
             {
                 var currentOrderId = HttpContext.Session.GetInt32(SessionOrderId);
-                productFromDb.OrderId = currentOrderId;
-
-                this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId).Products.Append(productFromDb);
+                var order = this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId);
+                this.context.OrderProducts.Add(new OrderProduct { OrderId = order.Id, ProductId = productFromDb.Id });
                 await this.context.SaveChangesAsync();
             }
 
 
             return Redirect($"/Restaurant/Show/{productFromDb.RestaurantId}");
+            //return Redirect($"/");
         }
 
     }

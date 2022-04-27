@@ -3,6 +3,7 @@ using Hapvai.Data.Models;
 using Hapvai.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,20 @@ namespace Hapvai.Controllers
         public ActionResult Index()
         {
             var currentOrderId = HttpContext.Session.GetInt32(SessionOrderId);
-            if (currentOrderId == null) 
+            if (currentOrderId == null)
             {
                 return View();
             }
-            var orderFromDb = this.context.Orders.FirstOrDefault(o=> o.Id == currentOrderId);
-            var products = this.context.Products.Where(p => p.OrderId == currentOrderId).ToList();
-
-            var orderView = new OrderViewModel() 
+            var orderFromDb = this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId);
+            var products = new List<Product>();
+            foreach (var op in this.context.OrderProducts) 
+            {
+                if (op.OrderId == orderFromDb.Id) 
+                {
+                    products.Append(op.Product);
+                }
+            }
+            var orderView = new OrderViewModel()
             {
                 OrderId = orderFromDb.Id,
                 RestaurantId = orderFromDb.Id,

@@ -31,11 +31,14 @@ namespace Hapvai.Data.Models
         public Foodtype Foodtype { get; set; }
 
 
-        
-        public int? OrderId { get; set; }
-        public Order Order { get; set; }
 
-        
+        //public int? OrderId { get; set; }
+        //public Order Order { get; set; }
+
+
+        public IEnumerable<OrderProduct> OrderProducts { get; init; }
+
+
 
     }
 }

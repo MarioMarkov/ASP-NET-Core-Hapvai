@@ -5,6 +5,7 @@
     ViewData["Title"] = "Show";
 }
 
+
 <style>
     body {
         background: #f9f9f9;
@@ -268,13 +269,11 @@
                         <p style="float:right;">
                             @if ((bool)(ViewData["showEdit"]))
                             {
-                                     
-                                    var parameters = new Dictionary<string, string> { ["restaurantId"] = Model.RestaurantId.ToString() };
-
                                 
                                 <a asp-controller="Product" asp-action="Edit" asp-route-id="@p.Id"class="btn btn-primary">Edit</a>
                             }
                         </p>
+                        
                         <span class="badge badge-success">@Model.Foodtypes.FirstOrDefault(ft => ft.Id == p.FoodtypeId).Name</span>
                     </div>
                     <div class="food-card_bottom-section">
@@ -283,8 +282,10 @@
                                 <span class="fa fa-fire"></span> 220 - 280 Kcal
                             </div>
                             <div class="pull-right">
-                                @*<span class="badge badge-success">@p.Foodtype.Name</span>*@
-                                <a asp-controller="Product" asp-action="Order" asp-route-id="@p.Id" style="color:white" class="btn btn-primary">Add to order</a>
+                                
+                                <a asp-controller="Product" asp-action="Order" asp-route-id="@p.Id" style="color:white" class="btn btn-primary">Add to order</a>                                  
+                                
+                                
                             </div>
                         </div>
                         <hr>
@@ -294,10 +295,8 @@
                             </div>
                             <div class="food-card_order-count">
                                 <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <div class="quantity buttons_added">
-                                            <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
-                                        </div>
+                                    <div class="number-input">
+                                       
                                     </div>
                                 </div>
                             </div>

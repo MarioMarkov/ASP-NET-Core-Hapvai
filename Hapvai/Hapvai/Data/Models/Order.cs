@@ -14,7 +14,11 @@ namespace Hapvai.Data.Models
         public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
 
+
         [Required]
-        public IEnumerable<Product> Products { get; init; } = new List<Product>();
+        public IEnumerable<OrderProduct> OrderProducts { get; init; }
+
+        //[Required]
+        //public Dictionary<Product,int> ProductsQuantities { get; init; } = new Dictionary<Product, int> ();
     }
 }

@@ -134,6 +134,9 @@ namespace Hapvai.Controllers
             return View(await restaurants.ToListAsync());
         }
 
+       
+
+
         [Authorize]
         public IActionResult Add()
         {
