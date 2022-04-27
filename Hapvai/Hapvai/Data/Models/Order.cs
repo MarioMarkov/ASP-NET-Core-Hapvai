@@ -8,17 +8,17 @@ namespace Hapvai.Data.Models
 {
     public class Order
     {
-        [Required]
+        
         public int Id { get; set; }
+
+
+
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+
 
         public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
 
-
-        [Required]
-        public IEnumerable<OrderProduct> OrderProducts { get; init; }
-
-        //[Required]
-        //public Dictionary<Product,int> ProductsQuantities { get; init; } = new Dictionary<Product, int> ();
     }
 }

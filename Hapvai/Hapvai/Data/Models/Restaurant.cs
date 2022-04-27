@@ -32,7 +32,7 @@ namespace Hapvai.Data.Models
         public int OwnerId { get; set; }
         public Owner Owner{ get; set; }
 
-        public IList<Order> Orders { get; init; } = new List<Order>();
+        public List<Order> Orders { get; init; } 
         public IList<Product> Products { get; init; } = new List<Product>();
     }
 }

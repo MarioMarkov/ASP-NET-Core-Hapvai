@@ -18,15 +18,16 @@ else
 
     <div>
 
-        @foreach (var p in Model.Products)
+        @foreach (var oi in Model.OrderItems)
         {
             <div>
-                <img src="@p.ImageUrl" alt="Alternate Text" width="100px" height="100px" />
-                <span>@p.Name</span> <span>Price: @p.Price $</span>
+                <img src="@oi.Product.ImageUrl" alt="Alternate Text" width="100px" height="100px" />
+                <span>@oi.Product.Name</span> <span>Price: @oi.Product.Price $</span>
+                <span>Quantity: @oi.Quantity</span>
             </div>
         }
 
-        <div><span>Total: @Model.Products.Sum(p => p.Price) $</span></div>
+        <div><span>Total: @Model.OrderItems.Sum(oi => oi.Product.Price) $</span></div>
 
         <button>Make Order</button>
 

@@ -127,33 +127,48 @@ namespace Hapvai.Controllers
 
             if (HttpContext.Session.GetInt32(SessionOrderId) == null)
             {
-
-                var order = new Order()
-                {
-                    RestaurantId = productFromDb.RestaurantId,
-                    
-                };
-
-                //order.Products.Append(productFromDb);
-
-                
+                var order = new Order() { RestaurantId = productFromDb.RestaurantId,OrderItems = new List<OrderItem> {  } };
                 this.context.Orders.Add(order);
-
                 await this.context.SaveChangesAsync();
-                //productFromDb.Orders.Append(order);
                 var orderFromDb = this.context.Orders.OrderBy(o => o.Id).LastOrDefault();
-                var orderId = orderFromDb.Id;
-                //productFromDb.OrderId = orderId;
-                HttpContext.Session.SetInt32(SessionOrderId, orderId);
-                this.context.OrderProducts.Add(new OrderProduct { OrderId = orderId,ProductId= productFromDb.Id });
+
+                var orderItem = new OrderItem 
+                {
+                    Product = productFromDb,
+                    //Restaurant = productFromDb.Restaurant,
+                    Quantity = 1,
+                    OrderId = orderFromDb.Id
+                };
+                this.context.OrderItems.Add(orderItem);
                 await this.context.SaveChangesAsync();
+             
+                HttpContext.Session.SetInt32(SessionOrderId, orderFromDb.Id);
+               
             }
             else
             {
                 var currentOrderId = HttpContext.Session.GetInt32(SessionOrderId);
-                var order = this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId);
-                this.context.OrderProducts.Add(new OrderProduct { OrderId = order.Id, ProductId = productFromDb.Id });
-                await this.context.SaveChangesAsync();
+                var order = this.context.Orders.Include(o=>o.OrderItems).FirstOrDefault(o => o.Id == currentOrderId);
+                
+                
+                if (order.OrderItems.FirstOrDefault(oi => oi.ProductId == productFromDb.Id) != null)
+                {
+                    order.OrderItems.FirstOrDefault(oi => oi.ProductId == productFromDb.Id).Quantity++;
+                    await this.context.SaveChangesAsync();
+                }
+                else 
+                {
+                    var orderItem = new OrderItem
+                    {
+                        ProductId = productFromDb.Id,
+                        Product = productFromDb,
+                        OrderId = currentOrderId,
+                        Quantity =1
+                    };
+                    order.OrderItems.Add(orderItem);
+                    await this.context.SaveChangesAsync();
+                }
+
             }
 
 

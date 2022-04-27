@@ -13,7 +13,7 @@ namespace Hapvai.Models
         public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
 
-        public IList<Product> Products { get; set; }
+        public IList<OrderItem> OrderItems{ get; set; }
 
 
     }

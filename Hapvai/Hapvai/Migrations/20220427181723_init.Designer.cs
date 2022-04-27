@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hapvai.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220426094354_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220427181723_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -70,6 +70,31 @@ namespace Hapvai.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Hapvai.Data.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Hapvai.Data.Models.Owner", b =>
@@ -367,21 +392,6 @@ namespace Hapvai.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("OrderProduct");
-                });
-
             modelBuilder.Entity("Hapvai.Data.Models.Order", b =>
                 {
                     b.HasOne("Hapvai.Data.Models.Restaurant", "Restaurant")
@@ -391,6 +401,24 @@ namespace Hapvai.Migrations
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("Hapvai.Data.Models.OrderItem", b =>
+                {
+                    b.HasOne("Hapvai.Data.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Hapvai.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Hapvai.Data.Models.Owner", b =>
@@ -412,7 +440,7 @@ namespace Hapvai.Migrations
                     b.HasOne("Hapvai.Data.Models.Restaurant", "Restaurant")
                         .WithMany("Products")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Foodtype");
@@ -490,21 +518,6 @@ namespace Hapvai.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.HasOne("Hapvai.Data.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hapvai.Data.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Hapvai.Data.Models.Category", b =>
                 {
                     b.Navigation("Restaurants");
@@ -513,6 +526,11 @@ namespace Hapvai.Migrations
             modelBuilder.Entity("Hapvai.Data.Models.Foodtype", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Hapvai.Data.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("Hapvai.Data.Models.Owner", b =>

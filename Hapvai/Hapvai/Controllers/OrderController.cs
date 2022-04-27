@@ -28,20 +28,18 @@ namespace Hapvai.Controllers
             {
                 return View();
             }
-            var orderFromDb = this.context.Orders.FirstOrDefault(o => o.Id == currentOrderId);
+
+            var orderFromDb = this.context.Orders.Include(o=>o.OrderItems).FirstOrDefault(o => o.Id == currentOrderId);
             var products = new List<Product>();
-            foreach (var op in this.context.OrderProducts) 
-            {
-                if (op.OrderId == orderFromDb.Id) 
-                {
-                    products.Append(op.Product);
-                }
+            foreach (var oi in orderFromDb.OrderItems) {
+                products.Add(this.context.Products.FirstOrDefault(p => p.Id == oi.ProductId));
             }
+            //orderFromDb.OrderItems.Select(oi => oi.Product = this.context.Products.FirstOrDefault(p => p.Id == oi.ProductId));
+
             var orderView = new OrderViewModel()
             {
                 OrderId = orderFromDb.Id,
-                RestaurantId = orderFromDb.Id,
-                Products = products
+                OrderItems =  orderFromDb.OrderItems
             };
 
             return View(orderView);

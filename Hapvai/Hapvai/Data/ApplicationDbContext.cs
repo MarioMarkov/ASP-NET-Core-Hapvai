@@ -21,18 +21,26 @@ namespace Hapvai.Data
         public DbSet<Product> Products { get; init; }
         public DbSet<Foodtype> Foodtypes { get; init; }
         public DbSet<Owner> Owners { get; init; }
-        public DbSet<OrderProduct> OrderProducts { get; set; }
+       
+        public DbSet<OrderItem> OrderItems { get; init; }
+
+ 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
 
-            builder
-                .Entity<Restaurant>()
-                .HasMany(r => r.Products)
-                .WithOne(p=> p.Restaurant)
-                .HasForeignKey(p => p.RestaurantId)
+            builder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne(o => o.Order)
+                .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
+            //problem
+            builder
+                 .Entity<Order>()
+                 .HasOne(f => f.Restaurant)
+                 .WithMany(p => p.Orders)
+                 .HasForeignKey(p => p.RestaurantId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<Product>()
@@ -49,24 +57,12 @@ namespace Hapvai.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<Order>()
-                .HasOne(o => o.Restaurant)
-                .WithMany(r => r.Orders)
-                .HasForeignKey(o => o.RestaurantId)
-                .OnDelete(DeleteBehavior.Restrict);
+                 .Entity<Restaurant>()
+                 .HasMany(c => c.Orders)
+                 .WithOne(r => r.Restaurant)
+                 .HasForeignKey(c => c.RestaurantId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<OrderProduct>().HasKey(op => new { op.OrderId, op.ProductId });
-
-            builder.Entity<OrderProduct>()
-                .HasOne<Product>(op => op.Product)
-                .WithMany(o => o.OrderProducts)
-                .HasForeignKey(o => o.ProductId);
-
-
-            builder.Entity<OrderProduct>()
-                .HasOne<Order>(op => op.Order)
-                .WithMany(p => p.OrderProducts)
-                .HasForeignKey(o => o.OrderId);
 
             builder
                 .Entity<Owner>()
