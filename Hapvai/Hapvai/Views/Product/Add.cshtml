@@ -1,6 +1,8 @@
 ﻿@model ProductFormModel
 
-<form method="post">
+@{ Layout = null; }
+
+<form method="post" asp-controller="Product" asp-action="Add">
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" placeholder="Enter Product Name..." />
@@ -8,7 +10,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Price"></label>
-        <input type="number" asp-for="Price" class="form-control" placeholder="Enter Price..." />
+        <input type="number" step="0.01" asp-for="Price" class="form-control" placeholder="Enter Price..." />
         <span asp-validation-for="Price" class="small text-danger"></span>
     </div>
     <div class="form-group">
@@ -24,8 +26,6 @@
             }
         </select>
     </div>
-         @*<input id="docActionId" asp-for="RestaurantId" type="hidden" value="initialValue" />*@
-
-
+    <input  asp-for="RestaurantId" type="hidden" value="@(ViewContext.RouteData.Values["id"])" />
     <input type="submit" class="btn btn-primary mt-3" value="Save" />
 </form>

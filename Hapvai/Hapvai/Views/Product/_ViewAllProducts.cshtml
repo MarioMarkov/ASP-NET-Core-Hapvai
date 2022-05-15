@@ -1,0 +1,22 @@
+﻿@model RestaurantShowModel
+
+@foreach (var p in Model.Products)
+{
+    <div class="food-items">
+        <img src="@p.ImageUrl" alt="Image of @p.Name" />
+
+        @if ((bool)(ViewData["showEdit"]))
+        {
+            <a asp-controller="Product" asp-action="Edit" asp-route-id="@p.Id" class="">Edit</a>
+        }
+        <div class="details">
+            <div class="details-sub">
+                <h5 class="product-name">@p.Name</h5>
+                <h5 class="price">@p.Price$</h5>
+                <h5 class="">@p.Foodtype.Name</h5>
+            </div>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas, tempora! </p>
+            <a asp-controller="Product" asp-action="Order" asp-route-id="@p.Id" style="color:white" class="addOrderBtn btn btn-primary">Add to order</a>
+        </div>
+    </div>
+}

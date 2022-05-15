@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Razor.Templating.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,11 +42,12 @@ namespace Hapvai.Controllers
                 this.context.SaveChanges();
             }
 
-            return View(new ProductFormModel { Foodtypes = this.context.Foodtypes });
+            return View(new ProductFormModel { Foodtypes = this.context.Foodtypes,RestaurantId = id });
         }
+
         [Authorize]
         [HttpPost]
-        public IActionResult Add(ProductFormModel data, int id)
+        public IActionResult Add(ProductFormModel data)
         {
 
             var product = new Product()
@@ -54,21 +56,34 @@ namespace Hapvai.Controllers
                 Price = data.Price,
                 ImageUrl = data.ImageUrl,
                 FoodtypeId = data.FoodtypeId,
-                RestaurantId = id,
-                
+                RestaurantId = data.RestaurantId,
+
 
             };
 
             this.context.Products.Add(product);
             this.context.SaveChanges();
 
-            return Redirect($"/Restaurant/Show/{id}");
+            return Redirect($"/Restaurant/Show/{data.RestaurantId}");
+            //return Ok();
+            //return Redirect($"/Restaurant/Show/{id}");
+            //var products = this.context.Products.Include(p => p.Foodtype).Where(p => p.RestaurantId == id);
+
+            //var restaurant = new RestaurantShowModel()
+            //{
+            //    RestaurantId = id,
+            //    Name = data.Name,
+            //    ImageUrl = data.ImageUrl,
+            //    Products = products,
+            //    Foodtypes = this.context.Foodtypes
+            //};
+            //var html = await RazorTemplateEngine.RenderAsync("~/Views/Product/_ViewAllProducts.cshtml", restaurant);
+
+            //return Json(new { isValid = true });
         }
 
         public IActionResult AllProductsForRestaurant(int restaurantId)
         {
-            var restaurant = this.context.Restaurants.FirstOrDefault(r => r.Id == restaurantId);
-
             var products = this.context.Products.All(p => p.RestaurantId == restaurantId);
             ////var productsShow = new List<ProductShowModel>() { 
             ////products};
@@ -175,6 +190,8 @@ namespace Hapvai.Controllers
             return Redirect($"/Restaurant/Show/{productFromDb.RestaurantId}");
             //return Redirect($"/");
         }
+
+        
 
     }
 }

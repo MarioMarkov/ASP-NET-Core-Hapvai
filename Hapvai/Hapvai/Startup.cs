@@ -79,6 +79,8 @@ namespace Hapvai
 
             app.UseRouting();
 
+            app.UseDefaultFiles();
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();

@@ -23,23 +23,8 @@ namespace Hapvai.Controllers
         }
 
 
-        
         public IActionResult Show(int id)
         {
-            // data = this.context.Restaurants.FirstOrDefault(r => r.Id == id);
-
-            //var products = new List<Product>() {
-            //    new Product { Name = "Musaka",FoodtypeId=1,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99},
-            //    new Product { Name = "Musaka",FoodtypeId=2,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99},
-            //    new Product { Name = "Musaka",FoodtypeId=3,ImageUrl="https://www.supichka.com/files/images/1242/musaka_2.jpg",RestaurantId = id,Price=5.99}
-            //};
-
-            //if (!this.context.Products.Any()) 
-            //{
-            //    this.context.AddRange(products);
-            //    this.context.SaveChanges();
-            //}
-
             if (User.Identity.IsAuthenticated) 
             {
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -57,7 +42,7 @@ namespace Hapvai.Controllers
             else { ViewData["showEdit"] = false; }
 
             var data = this.context.Restaurants.FirstOrDefault(r => r.Id == id);
-            var products = this.context.Products.Where(p => p.RestaurantId == id);
+            var products = this.context.Products.Include(p=> p.Foodtype).Where(p => p.RestaurantId == id);
 
             var restaurant = new RestaurantShowModel() { 
                 RestaurantId = data.Id,
@@ -112,21 +97,21 @@ namespace Hapvai.Controllers
             //    this.context.SaveChanges();
             //}
             if (city == null || city == String.Empty || city == "") {
-                var allRestaurants = this.context.Restaurants.Select(r => new RestaurantViewModel
+                var allRestaurants = this.context.Restaurants.Include(r=> r.Category).Select(r => new RestaurantViewModel
                 {
                     Id = r.Id,
                     Name = r.Name,
-                    Category = r.Category.Name,
+                    Category = r.Category,
                     Location = r.Location,
                     Rating = r.Rating,
                     ImageUrl = r.ImageUrl
                 });
                 return View( await allRestaurants.ToListAsync());
             }
-            var restaurants = this.context.Restaurants.Where(r => r.Location.ToLower() == city).Select(r=> new RestaurantViewModel { 
+            var restaurants = this.context.Restaurants.Include(r=> r.Category).Where(r => r.Location.ToLower() == city).Select(r=> new RestaurantViewModel { 
                 Id = r.Id,
                 Name = r.Name,
-                Category = r.Category.Name,
+                Category = r.Category,
                 Location = r.Location,
                 Rating = r.Rating,
                 ImageUrl = r.ImageUrl
@@ -200,11 +185,11 @@ namespace Hapvai.Controllers
             var owner = this.context.Owners.FirstOrDefault(o => o.UserId == userId);
 
 
-            var restaurants = this.context.Restaurants.Where(r => r.OwnerId == owner.Id).Select(r => new RestaurantViewModel
+            var restaurants = this.context.Restaurants.Include(r => r.Category).Where(r => r.OwnerId == owner.Id).Select(r => new RestaurantViewModel
             {
                 Id = r.Id,
                 Name = r.Name,
-                Category = r.Category.Name,
+                Category = r.Category,
                 Location = r.Location,
                 Rating = r.Rating,
                 ImageUrl = r.ImageUrl
@@ -215,7 +200,7 @@ namespace Hapvai.Controllers
 
         public async Task<IActionResult> AllRestaurantsFromSearch(string searchString)
         {
-            var restaurants = from r in this.context.Restaurants
+            var restaurants = from r in this.context.Restaurants.Include(r=> r.Category)
                               select r;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -223,11 +208,11 @@ namespace Hapvai.Controllers
             }
 
 
-            var restaurantsView = restaurants.Select(r => new RestaurantViewModel
+            var restaurantsView = restaurants.Include(r=>r.Category).Select(r => new RestaurantViewModel
             {
                 Id = r.Id,
                 Name = r.Name,
-                Category = r.Category.Name,
+                Category = r.Category,
                 Location = r.Location,
                 Rating = r.Rating,
                 ImageUrl = r.ImageUrl
